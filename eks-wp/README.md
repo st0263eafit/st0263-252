@@ -36,11 +36,24 @@ ejemplo de salida:
 
     kubectl apply -f private-ecr-driver.yaml
 
+    helm repo update
+    
+    helm install aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
+    --namespace kube-system \
+    --set controller.serviceAccount.create=false \
+    --set controller.serviceAccount.name=efs-csi-controller-sa
+    
+    Para confirmar que instaló pods de EFS:
+    
+    kubectl get pods -n kube-system | grep efs
+
 ## 7. ejecutar el despliegue de mysql y wordpress en EKS:
 
 nota: no se utilizan los archivos mysql-deployment.yaml propuesto en la página de referencia, y se utiliza 01mysql-deployment.yaml depurado de varias fuentes.
 
-    kubectl apply -k ./
+    kubectl apply -f 01mysql-deployment.yaml
+    kubectl apply -f 02wordpress-deployment.yaml
+
 
 monitorear:
     
